@@ -80,3 +80,45 @@ def Percent (voltage):
     per = (int (voltage/3.1*100))
     return per
 
+# Define sensor channels
+channel1 = 0
+channel2 = 1
+channel3 = 2
+
+# Define delay between readings
+delay = .5
+timer = 0
+minute = 0
+hour = 0
+arr = []
+y = True 
+try:
+    while 1:
+        if(y == True):
+   
+            sensor_data1 = GetData (channel1)
+            pot = round(ConvertVolts(sensor_data1),2)
+            sensor_data2 = GetData (channel2)
+            sensor_volt2 = round(ConvertVolts(sensor_data2),2)
+            sensor_data3 = GetData (channel3)
+            sensor_volt3 = ConvertVolts(sensor_data3)
+            temp = round(Temperature(sensor_volt3),2)
+            light = Percent(sensor_volt2)
+            element = (str(time.strftime("%H:%M:%S   ")) + str(hour).zfill(2) +':' +str(minute).zfill(2) +':' + str(int(timer*10)).zfill(2) + "     " + str(pot)+ 'V    ' + str(temp) + 'C     ' + str(light) +'%')
+            arr.append(element) 
+            print(element)
+          
+        # Wait before repeating loop
+        time.sleep(delay)
+        timer = timer + delay
+       
+        if timer >= 6:
+            timer = timer - 6
+            minute = minute + 1
+        if minute >= 60:
+            minute = minute - 60
+            hour = hour + 1
+
+except KeyboardInterrupt:
+    spi.close()
+
