@@ -62,3 +62,16 @@ def GetData(channel): # channel must be an integer 0-7
     adc = spi.xfer2([1,(8+channel)<<4,0]) # sending 3 bytes
     data = ((adc[1]&3) << 8) + adc[2]
     return data
+
+# function to read ADC data from a channel
+def GetData(channel): # channel must be an integer 0-7
+    adc = spi.xfer2([1,(8+channel)<<4,0]) # sending 3 bytes
+    data = ((adc[1]&3) << 8) + adc[2]
+    return data
+
+
+# function to convert data to voltage level (ALSO function for pot)
+# places: number of decimal places needed
+def ConvertVolts(data):
+    volts = (data * 3.3) / float(1023)
+    return volts
