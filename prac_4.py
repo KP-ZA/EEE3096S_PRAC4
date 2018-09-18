@@ -56,3 +56,9 @@ GPIO.add_event_detect(23,GPIO.FALLING,callback=callback1,bouncetime=500)
 GPIO.add_event_detect(22,GPIO.FALLING,callback=callback2,bouncetime=500)
 GPIO.add_event_detect(27,GPIO.FALLING,callback=callback3,bouncetime=500)
 GPIO.add_event_detect(17,GPIO.FALLING,callback=callback4,bouncetime=500)
+
+# function to read ADC data from a channel
+def GetData(channel): # channel must be an integer 0-7
+    adc = spi.xfer2([1,(8+channel)<<4,0]) # sending 3 bytes
+    data = ((adc[1]&3) << 8) + adc[2]
+    return data
